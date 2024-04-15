@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "includes.h": "c",
-        "stdbool.h": "c",
-        "folha.h": "c"
-    }
-}
