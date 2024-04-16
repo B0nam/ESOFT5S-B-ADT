@@ -1,0 +1,7 @@
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
+
+#define MAX_TAMANHO_NOME 100
+#define MAX_TAMANHO_NUMERO 10
+
+#endif
