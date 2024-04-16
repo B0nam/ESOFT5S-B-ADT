@@ -7,7 +7,6 @@ char nomeArquivo[] = "PALAVRAS-CHAVE.txt";
 
 void lerArquivo(char *nomeArquivo, char (*palavrasChave)[MAX_TAMANHO_PALAVRAS]);
 void ordenarArray(char **palavrasChave);
-void gerarArvore();
 
 int main(void)
 {
