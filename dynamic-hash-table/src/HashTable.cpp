@@ -1,36 +1,110 @@
-#include "../include/HashTableNode.h"
 #include "../include/HashTable.h"
+#include "../include/HashTableNode.h"
 #include "../include/Product.h"
+#include <iostream>
+#include <string>
 
-template <typename class Tkey, class TValue>
-HashTable<Tkey, TValue>::HashTable(unsigned int initial_length) {
-    elements = new HashTableNode*[initial_length];
-    size = initial_length;
+using namespace std;
+
+HashTable::HashTable(unsigned int initial_length) {
+  this->elements = new HashTableNode *[initial_length];
+  this->size = initial_length;
 }
 
-template <typename class TKey, class TValue>
-unsigned int HashTable<TKey, TValue>::hashFunction(TKey key) {
-    unsigned int hash = 0;
-    for (int i = 0; i < 50; i++) {
-        hash += static_cast<unsigned int>(name[i]);
+Product *HashTable::read(string name) {
+  unsigned int hash = this->hashFunction(name);
+
+  if (this->elements[hash] == nullptr) {
+    return nullptr;
+  } else {
+    Product *productFound = this->elements[hash]->data;
+    if (productFound->name.compare(name) == 0) {
+      return productFound;
     }
-    return hash % size;
+    hash++;
+    productFound = this->elements[hash]->data;
+    while (productFound->name.compare(name) != 0) {
+      hash++;
+    }
+  }
+  return this->elements[hash]->data;
 }
 
-template <typename class TKey, class TValue>
-void  HashTable<TKey, TValue>::insert(TKey, TValue) {
-    HashTableNode* node = new HashTableNode(data);
+bool HashTable::remove(std::string name) {
+  unsigned int hash = this->hashFunction(name);
+  HashTableNode *element = this->elements[hash];
 
-    unsigned int hash = HashTable::hashFunction(product->name);
+  if (element == nullptr) {
+    return false;
+  } else {
+    if (element->data->name.compare(name) == 0) {
+      this->elements[hash] = nullptr;
+      return true;
+    }
+    hash++;
+    Product *productFound = this->elements[hash]->data;
+    while (productFound->name.compare(name) != 0) {
+      hash++;
+    }
+    return true;
+  }
+}
 
-    if (elements[hash] == nullptr) {
-        elements[hash] = node;
+unsigned int HashTable::hashFunction(string name) {
+  long hash = 0;
+  for (int i = 0; i < name.length(); i++) {
+    hash += static_cast<unsigned int>(name[i]);
+  }
+  return hash % size;
+}
+
+void HashTable::insert(Product *product) {
+  if (static_cast<double>(this->quantityAdded) /
+          static_cast<double>(this->size) >
+      0.5) {
+    this->rehash();
+  }
+
+  HashTableNode *node = new HashTableNode(product);
+  unsigned int hash = HashTable::hashFunction(product->name);
+
+  if (elements[hash] == nullptr) {
+    elements[hash] = node;
+  } else {
+    HashTableNode *current = elements[hash];
+    unsigned int index = hash;
+    while (current != nullptr) {
+      current = elements[++index];
+    }
+    elements[index] = node;
+  }
+  this->quantityAdded++;
+}
+
+void HashTable::rehash() {
+  unsigned int oldSize = this->size;
+  HashTableNode **oldElements = this->elements;
+
+  this->size *= 2;
+  this->elements = new HashTableNode *[this->size];
+  this->quantityAdded = 0;
+
+  for (int i = 0; i < oldSize; i++) {
+    if (oldElements[i] != nullptr) {
+      this->insert(oldElements[i]->data);
+    }
+  }
+  delete[] oldElements;
+}
+
+void HashTable::printAll() {
+  for (int i = 0; i < this->size; i++) {
+    cout << "Index: " << i;
+    if (this->elements[i] != nullptr) {
+      cout << " -> " << this->elements[i]->data->name;
     } else {
-        HashTableNode* current = elements[hash];
-        unsigned int index = hash;
-        while (current != nullptr) {
-            current = elements[++index];
-        }
-        elements[index] = node;
+      cout << " -> NULL";
     }
+    cout << endl;
+  }
 }

@@ -1,9 +1,14 @@
-#include "NodeData.h"
+#ifndef PRODUCT_H
+#define PRODUCT_H
 
-class Product : public NodeData {
-    public:
-        Product(char name[50], unsigned int quantity, double price);
-        char name[50];
-        double price;
-        unsigned int quantity;
+#include <string>
+
+class Product {
+public:
+  Product(std::string name, unsigned int quantity, double price);
+  std::string name;
+  double price;
+  unsigned int quantity;
 };
+
+#endif
