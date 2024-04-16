@@ -1,14 +1,13 @@
-#include "NodeData.h"
+#include "Product.h"
+
 #ifndef HASHTABLENODE_H
 #define HASHTABLENODE_H
 
 class HashTableNode {
-    public:
-        HashTableNode();
-        HashTableNode(NodeData* data);
-        NodeData* data;
-    private:
-        unsigned int key;
+public:
+  HashTableNode();
+  HashTableNode(Product *product);
+  Product *data;
 };
 
 #endif

@@ -2,6 +2,6 @@
 
 HashTableNode::HashTableNode() {}
 
-HashTableNode::HashTableNode(NodeData* data) {
-    data = data;
+HashTableNode::HashTableNode(Product* data) {
+    this->data = data;
 }
