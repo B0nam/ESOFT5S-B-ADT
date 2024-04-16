@@ -6,7 +6,6 @@ char palavrasChave[MAX_PALAVRAS][MAX_TAMANHO_PALAVRAS];
 char nomeArquivo[] = "PALAVRAS-CHAVE.txt";
 
 void lerArquivo(char *nomeArquivo, char (*palavrasChave)[MAX_TAMANHO_PALAVRAS]);
-void ordenarArray(char **palavrasChave);
 
 int main(void)
 {
